@@ -9,7 +9,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 		make -C libft/
-		$(CC) $(FLAGS) $(SRCS) -L ./libft -lft -o $(NAME)
+		$(CC) $(FLAGS) $(SRCS) -L ./libft -lft -ltermcap -o $(NAME)
 
 %.o: %.c
 			$(CC) $(CFLAGS) -I $(INC) $< -c -o $@

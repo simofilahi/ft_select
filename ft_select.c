@@ -22,7 +22,7 @@ t_output **create_list(char **argv)
     ptr = NULL;
     while ((*++argv))
     {
-        create_node(&node, (*argv));
+        create_node (&node, (*argv));
         if (ptr == NULL)
              ptr = &node;
     }
@@ -41,59 +41,70 @@ void print_list(t_output **head_ref)
      }
 }
 
-int getch(void)
+int my_ft_putchar(int c)
 {
-    struct termios oldattr, newattr;
-    int ch;
-    tcgetattr( STDIN_FILENO, &oldattr );
-    newattr = oldattr;
-    newattr.c_lflag &= ~( ICANON | ECHO );
-    tcsetattr( STDIN_FILENO, TCSANOW, &newattr );
-    ch = getchar();
-    tcsetattr( STDIN_FILENO, TCSANOW, &oldattr );
-    return ch;
+	write (2, &c, 1);
+	return (0);
 }
 
-void ft_select()
+void ft_select(t_output **head)
 {
-    struct termios config;
+    t_output *head_ref;
+    struct termios newconfig;
+    struct termios oldconfig;
     int ch;
- 
-   if (!isatty(STDIN_FILENO))
+    char *termtype;
+    int success;
+    char *ti_string, *te_string, *vi_string, *ve_string, *gotostr;
+   // char buf2[30];
+	//char *ap = buf2;
+
+    head_ref = (*head);
+    if (!isatty(STDIN_FILENO))
         ft_putendl("error file descriptor not pointing to a tty");
-    if (tcgetattr(STDIN_FILENO, &config))
+    if (tcgetattr(STDIN_FILENO, &oldconfig))
         ft_putendl("error can't get the current configuration");
-    config.c_lflag &= ~(ECHO | ICANON);
-    config.c_cc[VMIN]  = 1;
-    if (tcsetattr(STDIN_FILENO, TCSANOW, &config) < 0)
+    newconfig = oldconfig;
+    newconfig.c_lflag &= ~(ECHO | ICANON);
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &newconfig) < 0)
         ft_putendl("error can't apply the configuration");
-    while (1)
+    termtype = getenv("TERM");
+    success = tgetent(0, termtype);
+   /* if (success > 0)
+        ft_putendl("success");*/
+    ti_string = tgetstr("ti", NULL);
+    te_string = tgetstr("te", NULL);
+    vi_string = tgetstr("vi", NULL);
+    ve_string = tgetstr("ve", NULL);
+    gotostr = tgetstr("cm", NULL);
+    tputs(ti_string, 1, my_ft_putchar);
+    //fputs(vi_string, stdout);
+	while (1)
     {
+        //fputs(ti_string, stdout);
         ch = 0;
         if (read(STDIN_FILENO, &ch, 4))
         {
-            if(ch == keyup)
-                ft_putendl("value of keyup is working");
-            else if(ch == keydown)
-                ft_putendl("value of keydown is working");
-            else if(ch == keyright)
-                ft_putendl("value of keyright is working");
-            else if(ch == keyleft)
-                ft_putendl("value of keyleft is working");
+           if(ch == keyup || ch == keydown || ch == keyright || ch == keyleft)
+            {
+              write(1, &ch, 4);
+            }
             else if(ch == esc)
             {
-                ft_putendl("value of esc is working");
-                break ;
+                //ft_putendl("value of esc is working");
+               	 fputs(te_string, stdout); 
+                    break ;
             }
             else if(ch == delete)
-                ft_putendl("value of delete is working");
+               write(1, &ch, 4);
             else if(ch == backspace)
-                ft_putendl("value of backspace is working");
+                write(1, &ch, 4);
             else if(ch == space)
-                ft_putendl("value of space is working");
-            }
-        }
-        
+                write(1, &ch, 4);
+         }
+    } 
+    // fputs(te_string, stdout);
+    // fputs(ve_string, stdout);    
     }
 
 int main(int argc, char **argv)
@@ -103,7 +114,7 @@ int main(int argc, char **argv)
     (void)argc;
     (void)argv;
     head = create_list(argv);
-    print_list(head);
-    ft_select();
+  // print_list(head);
+    ft_select(head);
     return (0);
 }

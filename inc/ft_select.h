@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <termios.h>
+#include <termcap.h>
 #include "../libft/libft.h"
 
 #define keyup 4283163
