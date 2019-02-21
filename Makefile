@@ -1,26 +1,23 @@
 NAME= ft_select
-CC= gcc
-FLAGS= -Wextra -Werror -Wall
-INC= inc/.
 SRCS= *.c
-BINS= $(SRCS:.c=.o)
+CC= gcc
+CFLAGS= -Wall -Werror -Wextra
+INC= inc/.
+OBJS= $(SRC:.c=.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 		make -C libft/
-		$(CC) $(FLAGS) $(SRCS) -L ./libft -lft -ltermcap -o $(NAME)
-
+		$(CC) $(CFLAGS) $(SRCS) -L ./libft -lft -ltermcap -o $(NAME)
 %.o: %.c
-			$(CC) $(CFLAGS) -I $(INC) $< -c -o $@
-
+		$(CC) $(CFLAGS) -I $(INC) $< -c -o $@
 clean:
-			make -C libft/ clean
-			rm -f $(OBJ)
+	make -C libft/ clean
+	rm -f $(OBJS)
 
 fclean: clean
-			make -C libft/ fclean
-			rm -f $(NAME)
+	make -C libft/ fclean
+	rm -f $(NAME)
 
 re: fclean all
-

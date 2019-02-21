@@ -1,120 +1,81 @@
 #include "inc/ft_select.h"
 
-void create_node(t_output **head_ref, char *string)
-{
-    t_output *new_node;
-
-    if (!(new_node = malloc(sizeof(t_output))))
-        return ;
-    if (!(new_node->string = ft_strnew(ft_strlen(string) + 1)))
-        return ;
-    ft_strcpy(new_node->string, string);
-    new_node->next = (*head_ref);
-    (*head_ref) = new_node;
-}
-
-t_output **create_list(char **argv)
-{
-    t_output *node;
-    t_output **ptr;
-
-    node = NULL;
-    ptr = NULL;
-    while ((*++argv))
-    {
-        create_node (&node, (*argv));
-        if (ptr == NULL)
-             ptr = &node;
-    }
-    return(ptr);
-}
-
-void print_list(t_output **head_ref)
-{
-    t_output *ptr;
-
-    ptr = (*head_ref);
-    while (ptr->next)
-    {
-        ft_putendl(ptr->string);
-        ptr = ptr->next;
-     }
-}
-
-int my_ft_putchar(int c)
+int my_putchar(int c)
 {
 	write (2, &c, 1);
 	return (0);
 }
 
+void ft_termios(t_output **head_ref)
+{
+    t_output *ptrnode;
+
+    ptrnode = (*head_ref);
+    if (!isatty(STDIN_FILENO))
+        ft_putendl_fd("error file descriptor not pointing to a tty", 2);
+    if (tcgetattr(STDIN_FILENO, &ptrnode->oldconfig))
+        ft_putendl_fd("error can't get the current configuration", 2);
+    ptrnode->newconfig = ptrnode->oldconfig;
+    ptrnode->newconfig.c_lflag &= ~(ECHO | ICANON);
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &ptrnode->newconfig) < 0)
+        ft_putendl_fd("error can't apply the configuration", 2);
+}
+
+void ft_termcap()
+{
+    char *termtype;
+    int success;
+     char buf2[30];
+	char *ap = buf2;
+
+    termtype = getenv("TERM");
+    success = tgetent(ap, termtype);
+}
+
 void ft_select(t_output **head)
 {
     t_output *head_ref;
-    struct termios newconfig;
-    struct termios oldconfig;
     int ch;
-    char *termtype;
-    int success;
-    char *ti_string, *te_string, *vi_string, *ve_string, *gotostr;
-   // char buf2[30];
-	//char *ap = buf2;
 
     head_ref = (*head);
-    if (!isatty(STDIN_FILENO))
-        ft_putendl("error file descriptor not pointing to a tty");
-    if (tcgetattr(STDIN_FILENO, &oldconfig))
-        ft_putendl("error can't get the current configuration");
-    newconfig = oldconfig;
-    newconfig.c_lflag &= ~(ECHO | ICANON);
-    if (tcsetattr(STDIN_FILENO, TCSANOW, &newconfig) < 0)
-        ft_putendl("error can't apply the configuration");
-    termtype = getenv("TERM");
-    success = tgetent(0, termtype);
-   /* if (success > 0)
-        ft_putendl("success");*/
-    ti_string = tgetstr("ti", NULL);
-    te_string = tgetstr("te", NULL);
-    vi_string = tgetstr("vi", NULL);
-    ve_string = tgetstr("ve", NULL);
-    gotostr = tgetstr("cm", NULL);
-    tputs(ti_string, 1, my_ft_putchar);
-    //fputs(vi_string, stdout);
+    tputs(ti_string, 1, my_putchar);
+    print_list(&head_ref);
+    tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
 	while (1)
     {
-        //fputs(ti_string, stdout);
         ch = 0;
         if (read(STDIN_FILENO, &ch, 4))
         {
            if(ch == keyup || ch == keydown || ch == keyright || ch == keyleft)
             {
-              write(1, &ch, 4);
+                write(2, &ch, 4);
             }
             else if(ch == esc)
-            {
-                //ft_putendl("value of esc is working");
-               	 fputs(te_string, stdout); 
-                    break ;
+            {   
+                     tcsetattr(STDIN_FILENO, TCSANOW, &head_ref->newconfig);
+                     tputs(te_string, 1, my_putchar);
+                     break ;
             }
-            else if(ch == delete)
-               write(1, &ch, 4);
+           /* else if(ch == delete)   
             else if(ch == backspace)
-                write(1, &ch, 4);
             else if(ch == space)
-                write(1, &ch, 4);
-         }
-    } 
-    // fputs(te_string, stdout);
-    // fputs(ve_string, stdout);    
-    }
+            {
+            }*/
+        }
+    }   
+}
 
 int main(int argc, char **argv)
 {
-   t_output **head;
+    t_output **head;
+    t_output *tail;
 
     (void)argc;
     (void)argv;
+    tail = NULL;
     head = create_list(argv);
-  // print_list(head);
+    ft_termios(head);
+    ft_termcap();
     ft_select(head);
     return (0);
 }
