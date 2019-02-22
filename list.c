@@ -56,12 +56,9 @@ int long_string()
 void fill_pos()
 {
     t_output *ptrnode;
-    struct coordone fill;
     int i;
 
     ptrnode = head_func(NULL);
-    fill.vpos = 0;
-    fill.hpos = 0;
     i = 0;
     while (ptrnode)
     {
@@ -71,7 +68,45 @@ void fill_pos()
         ptrnode = ptrnode->next;
     }
 }
-void ft_calcule()
+
+void fill_pos_2(int y)
+{
+    t_output *ptrnode;
+    t_output *var;
+   // t_output *tmp;
+  //  struct coordone fill;
+    int i;
+
+    ptrnode = head_func(NULL);
+
+   var = ptrnode;
+    i = 0;
+    //int j = 1;
+    (void)y;
+    while (ptrnode)
+    {
+        ptrnode->position = malloc(sizeof(struct coordone));
+        ptrnode->position->vpos = i++;
+        ptrnode->position->hpos = 0;
+       // tmp = ptrnode;
+        ptrnode = ptrnode->next;
+        /*if (i == var->max.ws_row)
+        {
+            i = 0;
+            while (tmp)
+            {
+                ptrnode->position->vpos = i++;
+                ptrnode->position->hpos = y * j;
+                ptrnode = tmp;
+                if (i == var->max.ws_row)
+                    break;
+                tmp = tmp->next;
+            }
+        }*/
+    }
+}
+
+int ft_calcule()
 {
     t_output *ptrnode;
     float x;
@@ -85,7 +120,17 @@ void ft_calcule()
     fprintf(stderr, "x ==> %f\n", x);
     ft_putchar('\n');*/
     l_string = long_string();
-    fprintf(stderr, "l_string ==> %d\n", l_string);
+   // fprintf(stderr, "l_string ==> %d\n", l_string);
+    int y = x * l_string + 6;
+   // fprintf(stderr, "y ==> %d\n", y);
+    //fprintf(stderr, "ptrnode->max.ws_col %d\n", ptrnode->max.ws_col);
+    if (y < ptrnode->max.ws_col)
+    {
+        fill_pos_2(l_string + 6);
+        return (1);
+    }
+    else
+        return (0);
 }
 
 int windows_size()
@@ -101,7 +146,8 @@ int windows_size()
     }
     else if (ptrnode->max.ws_row < ptrnode->llen)
     {
-        ft_calcule();
+        if (ft_calcule())
+            return (1);
     }
     return (0);
 }
@@ -120,6 +166,7 @@ void print_list()
         ptr = ptr->next;
         while (ptr)
         {
+       //   fprintf(stderr, "ptr->position->vpos %d\n", ptr->position->hpos);
            tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
            ft_putendl_fd(ptr->string, 2);
            ptr = ptr->next;

@@ -101,6 +101,15 @@ void ft_select()
     get_input();
 }
 
+void init_coor()
+{
+    struct coordone *p;
+
+    p = malloc(sizeof(struct coordone));
+    p->vpos = 0;
+    p->hpos = 0;
+}
+
 int main(int argc, char **argv)
 {
     t_output *head;
@@ -117,6 +126,7 @@ int main(int argc, char **argv)
     head_func(&head);
     ft_termios();
     ft_termcap();
+    init_coor();
     ft_select();
     return (0);
 }
