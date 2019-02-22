@@ -1,24 +1,22 @@
 #include "inc/ft_select.h"
 
 
-t_output **head_func(t_output *ptr)
+t_output *head_func(t_output **ptr)
 {
-    static t_output **head_ref;
+    static t_output *head_ref;
 
     if (ptr == NULL)
         return (head_ref);
     else
-        head_ref = &ptr;
+        head_ref = (*ptr);
     return (head_ref);
 }
 
 void normal_mode()
 {
-    t_output **head_node;
     t_output *ptr;
 
-    head_node = head_func(NULL);
-    ptr = (*head_node);
+    ptr = head_func(NULL);
     tputs(te_string, 1, my_putchar);
     tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
     exit(0);
@@ -27,10 +25,7 @@ void normal_mode()
 void	signal_handler(int sign)
 {
 	if (sign == SIGINT)
-    {
         normal_mode();
-        exit(0);
-    }
 }
 
 void ft_signal()
@@ -46,11 +41,9 @@ int my_putchar(int c)
 
 void ft_termios()
 {
-    t_output **ptr;
     t_output *head_ref;
 
-    ptr  = head_func(NULL);
-    head_ref = (*ptr);
+    head_ref = head_func(NULL);
     head_ref->ptr = malloc(sizeof(struct follower));
     if (!isatty(STDIN_FILENO))
         ft_putendl_fd("error file descriptor not pointing to a tty", 2);
@@ -110,7 +103,7 @@ void ft_select()
 
 int main(int argc, char **argv)
 {
-    t_output **head;
+    t_output *head;
 
     SIG_NUM = 0;
     if (argc == 1)
@@ -119,17 +112,11 @@ int main(int argc, char **argv)
         ft_putendl_fd("./ft_select choice1 choice2 choice3 choice4", 2);
         return (0);
     }
-    head = create_list(argv);
-    printf("head->string ==> %s\n", (*head)->string);
-    printf("head @ is ---> %p\n", head);
-    //printf("%s\n", (*ptr)->string);
-    t_output *ref;
-
-    ref = (*head);
-    t_output **ptr = head_func(ref);
-    printf("head->string ==> %s\n", (*ptr)->string);
-    /*ft_termios();
+    ft_signal();
+    head = create_list(argv, argc);
+    head_func(&head);
+    ft_termios();
     ft_termcap();
-    ft_select();*/
+    ft_select();
     return (0);
 }
