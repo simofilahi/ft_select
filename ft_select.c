@@ -40,7 +40,6 @@ void ft_select(t_output **head)
     head_ref = (*head);
     tputs(ti_string, 1, my_putchar);
     print_list(&head_ref);
-    tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
 	while (1)
     {
         ch = 0;
@@ -52,7 +51,7 @@ void ft_select(t_output **head)
             }
             else if(ch == esc)
             {   
-                     tcsetattr(STDIN_FILENO, TCSANOW, &head_ref->newconfig);
+                     tcsetattr(STDIN_FILENO, TCSANOW, &head_ref->oldconfig);
                      tputs(te_string, 1, my_putchar);
                      break ;
             }
