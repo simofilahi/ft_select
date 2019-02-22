@@ -17,6 +17,7 @@
 #define delete 2117294875
 #define backspace 127
 #define space 32
+#define ctrl_c 003
 
 
 #define ti_string tgetstr("ti", NULL)
@@ -28,23 +29,40 @@
 #define gotostr tgetstr("ho", NULL)
 #define cl_string tgetstr("cl", NULL)
 
+
+//#define  SIG_NUM 0
+int				SIG_NUM;
+
 typedef struct s_output
 {
     char *string;
     int llen;
-    struct termios newconfig;
-    struct termios oldconfig;
+    struct follower *ptr;
+    struct coordone *position;
     struct winsize max;
     struct s_output *next;
     //struct s_output *prev;
 }              t_output;
 
-void print_list(t_output **head_ref);
+struct follower
+{
+    struct termios newconfig;
+    struct termios oldconfig;
+};
+
+struct coordone
+{
+    int vpos;
+    int hpos;
+};
+
+void print_list();
 void create_node(t_output **head_ref, char *string, int i);
 t_output **create_list(char **argv);
-void ft_select(t_output **head);
+void ft_select();
 int my_putchar(int c);
 int main(int argc, char **argv);
-void ft_termios(t_output **head_ref);
+void ft_termios();
+t_output **head_func(t_output *ptr);
 
 #endif
