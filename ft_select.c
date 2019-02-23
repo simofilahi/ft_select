@@ -26,11 +26,17 @@ void	signal_handler(int sign)
 {
 	if (sign == SIGINT)
         normal_mode();
+    if (sign == SIGWINCH)
+    {
+        tputs(cl_string, 1, my_putchar);
+        print_list();
+    }
 }
 
 void ft_signal()
 {
     signal(SIGINT, signal_handler);
+    signal(SIGWINCH, signal_handler);
 }
 
 int my_putchar(int c)

@@ -64,5 +64,6 @@ int my_putchar(int c);
 int main(int argc, char **argv);
 void ft_termios();
 t_output *head_func(t_output **ptr);
+void	signal_handler(int sign);
 
 #endif

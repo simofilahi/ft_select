@@ -69,40 +69,30 @@ void fill_pos()
     }
 }
 
+
 void fill_pos_2(int y)
 {
     t_output *ptrnode;
     t_output *var;
-   // t_output *tmp;
-  //  struct coordone fill;
     int i;
 
     ptrnode = head_func(NULL);
-
-   var = ptrnode;
+    var = ptrnode;
     i = 0;
-    //int j = 1;
-    (void)y;
+    int j = 0;
     while (ptrnode)
     {
         ptrnode->position = malloc(sizeof(struct coordone));
         ptrnode->position->vpos = i++;
-        ptrnode->position->hpos = 0;
-       // tmp = ptrnode;
+        ptrnode->position->hpos = y * j;
+       // fprintf(stderr, "ptrnode->position->vpos %d \n", ptrnode->position->vpos);
+       // fprintf(stderr, "ptrnode->position->hpos %d \n", ptrnode->position->hpos);
         ptrnode = ptrnode->next;
-        /*if (i == var->max.ws_row)
+        if (i == var->max.ws_row - 1)
         {
             i = 0;
-            while (tmp)
-            {
-                ptrnode->position->vpos = i++;
-                ptrnode->position->hpos = y * j;
-                ptrnode = tmp;
-                if (i == var->max.ws_row)
-                    break;
-                tmp = tmp->next;
-            }
-        }*/
+            j++;
+        }
     }
 }
 
@@ -121,7 +111,7 @@ int ft_calcule()
     ft_putchar('\n');*/
     l_string = long_string();
    // fprintf(stderr, "l_string ==> %d\n", l_string);
-    int y = x * l_string + 6;
+    int y = x * (l_string + 6);
    // fprintf(stderr, "y ==> %d\n", y);
     //fprintf(stderr, "ptrnode->max.ws_col %d\n", ptrnode->max.ws_col);
     if (y < ptrnode->max.ws_col)
@@ -166,7 +156,6 @@ void print_list()
         ptr = ptr->next;
         while (ptr)
         {
-       //   fprintf(stderr, "ptr->position->vpos %d\n", ptr->position->hpos);
            tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
            ft_putendl_fd(ptr->string, 2);
            ptr = ptr->next;
