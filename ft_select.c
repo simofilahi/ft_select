@@ -103,8 +103,10 @@ void	delete_node()
 
 	head_ref = head_func(NULL);
 	temp = head_func(NULL);
-	if (head_ref->next == NULL)
+	if (head_ref->next == NULL && head_ref->key == 0)
 	{
+		free(head_ref->string);
+		free(head_ref);	
 		normal_mode();	
 	}
 	if (head_ref && head_ref->cursor == 1)
@@ -114,7 +116,7 @@ void	delete_node()
 		reset_cursor();
 		temp->llen = reset_key();
 		free(head_ref->string);
-//		free(head_ref);
+		free(head_ref);
 		return ;
 	}
 	else
@@ -135,7 +137,6 @@ void	delete_node()
 		free(head_ref);
 		return ;
 	}
-	normal_mode();
 }
 
 /*void	delete_node(int key)
@@ -282,7 +283,7 @@ void get_input()
            {
                 key = finder_cursor();
                 apply_new_postion_cursor(key, 1);
-                //tputs(cl_string, 1, my_putchar);
+               // tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keydown)
@@ -290,7 +291,7 @@ void get_input()
                
 		 key = finder_cursor();
                 apply_new_postion_cursor(key, 0);
-              //  tputs(cl_string, 1, my_putchar);
+         //       tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keyright)
@@ -309,7 +310,7 @@ void get_input()
             else if(ch == delete)
             {
 		delete_node();
-                tputs(cl_string, 1, my_putchar);
+           //     tputs(cl_string, 1, my_putchar);
 		print_list();
             }
             else if(ch == backspace)
