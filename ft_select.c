@@ -74,7 +74,7 @@ void ft_termcap()
 	tgetent(ap, termtype);
 }
 
-void reset_key()
+int  reset_key()
 {
 	t_output *head_ref;
 
@@ -85,6 +85,15 @@ void reset_key()
 		head_ref->key = i++;
 		head_ref = head_ref->next;
 	}
+	return (i);
+}
+
+void reset_cursor()
+{
+	t_output *head_ref;
+
+	head_ref = head_func(NULL);
+	head_ref->cursor = 1;
 }
 
 void	delete_node()
@@ -93,20 +102,19 @@ void	delete_node()
 	t_output *temp;
 
 	head_ref = head_func(NULL);
+	temp = head_func(NULL);
 	if (head_ref->next == NULL)
 	{
-		free(head_ref->string);
-		free(head_ref);
-		normal_mode();
+		normal_mode();	
 	}
 	if (head_ref && head_ref->cursor == 1)
 	{
-		head_ref->next->cursor = 1;
-		if (head_ref->next != NULL)
-			head_func(&head_ref->next);
-		reset_key();
+		head_func(&head_ref->next);
+		temp = head_func(NULL);
+		reset_cursor();
+		temp->llen = reset_key();
 		free(head_ref->string);
-		free(head_ref);
+//		free(head_ref);
 		return ;
 	}
 	else
@@ -122,10 +130,12 @@ void	delete_node()
 			temp->cursor = 1;
 		else
 			temp->next->cursor = 1;
-		reset_key();
+		temp->llen = reset_key();
 		free(head_ref->string);
 		free(head_ref);
+		return ;
 	}
+	normal_mode();
 }
 
 /*void	delete_node(int key)
@@ -165,7 +175,6 @@ int finder_cursor()
     {
         if (head_ref->cursor == 1)
         {
-		ft_putendl_fd("error", 2);
             head_ref->cursor = 0;
             return (head_ref->key);
         }
@@ -173,6 +182,60 @@ int finder_cursor()
     }
     return (0);
 }
+
+/*int reset_key()
+{
+	t_output *head_ref;
+
+	head_ref = head_func(NULL);
+	int i = 0;
+	while (head_ref)
+	{
+		head_ref->key = i++;
+		head_ref = head_ref->next;
+	}
+ return (i);
+}
+
+void delete_node()
+{
+	t_output *head_ref;
+	t_output *temp;
+
+	head_ref = head_func(NULL);
+	if (head_ref && head_ref->cursor == 1)
+	{
+		head_ref->next->cursor = 1;
+		temp = head_func(&head_ref->next);
+		temp->llen = reset_key();
+		free(head_ref->string);
+		free(head_ref);
+		if (temp->next == NULL)
+			normal_mode();
+		return ;
+	}
+	else
+	{
+		temp = head_ref;
+		while (head_ref && head_ref->cursor != 1)
+		{
+			temp = head_ref;
+			head_ref = head_ref->next;
+		}
+		temp->next = head_ref->next;
+		if (temp->next == NULL)
+		{
+			//t_output *current = head_func(NULL);
+			temp->cursor = 1;
+		}
+		else
+			temp->next->cursor = 1;
+		free(head_ref->string);
+		free(head_ref);
+		return ;
+	}
+	normal_mode();
+}*/
 
 void apply_new_postion_cursor(int key, int flag)
 {
@@ -184,7 +247,7 @@ void apply_new_postion_cursor(int key, int flag)
         head_ref->tail->cursor = 1;
         return ;
     }
-    if (head_ref->tail->key == key && !flag)
+    if (head_ref->llen == key && !flag)
     {
         head_ref->cursor = 1;
         return ;
@@ -219,14 +282,13 @@ void get_input()
            {
                 key = finder_cursor();
                 apply_new_postion_cursor(key, 1);
-               // tputs(cl_string, 1, my_putchar);
+                //tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keydown)
            {
                
 		 key = finder_cursor();
-		ft_putendl_fd("error", 2);
                 apply_new_postion_cursor(key, 0);
               //  tputs(cl_string, 1, my_putchar);
                 print_list();
