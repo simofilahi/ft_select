@@ -164,8 +164,8 @@ void print_list()
             ft_putnbr_fd(ptr->key, 2);
             ft_putchar_fd('\n', 2);
              ptr = ptr->next;*/
-           //   tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
-           if (ptr->cursor == 1)
+           // tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
+            if (ptr->cursor == 1)
            {
                 tputs(us_string, 1, my_putchar);
                 tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);

@@ -18,6 +18,7 @@ void normal_mode()
 
     ptr = head_func(NULL);
     tputs(te_string, 1, my_putchar);
+    tputs(ve_string, 1, my_putchar);
     tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
     exit(0);
 }
@@ -89,19 +90,29 @@ int finder_cursor()
     return (0);
 }
 
-void apply_new_postion_cursor(int key)
+void apply_new_postion_cursor(int key, int flag)
 {
     t_output *head_ref;
 
     head_ref = head_func(NULL);
-    if (key == 0)
+    if (key == 0 && flag)
     {
         head_ref->tail->cursor = 1;
         return ;
     }
+    if (head_ref->tail->key == key && !flag)
+    {
+        head_ref->cursor = 1;
+        return ;
+    }
     while(head_ref)
     {
-        if (head_ref->key + 1 == key)
+        if (head_ref->key - 1 == key)
+        {
+            head_ref->cursor = 1;
+            return ;
+        }
+        if (head_ref->key + 1 == key && flag)
         {
             head_ref->cursor = 1;
             return ;
@@ -123,12 +134,16 @@ void get_input()
            if(ch == keyup)
            {
                 key = finder_cursor();
-                apply_new_postion_cursor(key);
+                apply_new_postion_cursor(key, 1);
+                tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keydown)
            {
-
+                key = finder_cursor();
+                apply_new_postion_cursor(key, 0);
+                tputs(cl_string, 1, my_putchar);
+                print_list();
            }
            else if (ch == keyright)
            {
