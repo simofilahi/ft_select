@@ -154,6 +154,7 @@ void print_list()
     ptr = head_func(NULL);
     if (windows_size())
     {
+        tputs(vi_string, 1, my_putchar);
         while (ptr)
         {
            /* ft_putstr_fd("ptr->cursor --> ", 2);
