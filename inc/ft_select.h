@@ -26,22 +26,25 @@
 #define ue_string tgetstr("ue", NULL)
 #define mr_string tgetstr("mr", NULL)
 #define me_string tgetstr("me", NULL)
+#define vi_string tgetstr("vi", NULL)
+#define ve_string tgetstr("ve", NULL)
 #define gotostr tgetstr("cm", NULL)
 #define cl_string tgetstr("cl", NULL)
 
-
-//#define  SIG_NUM 0
 int				SIG_NUM;
 
 typedef struct s_output
 {
     char *string;
+    int cursor;
+    int selected;
+    int key;
     int llen;
     struct follower *ptr;
     struct coordone *position;
     struct winsize max;
     struct s_output *next;
-    //struct s_output *prev;
+    struct s_output *tail;
 }              t_output;
 
 struct follower
@@ -57,7 +60,7 @@ struct coordone
 };
 
 void print_list();
-t_output *add_node(char *string);
+t_output *add_node(char *string, int cursor, int key);
 t_output *create_list(char **argv, int argc);
 void ft_select();
 int my_putchar(int c);

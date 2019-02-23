@@ -1,12 +1,14 @@
 #include "inc/ft_select.h"
 
-t_output *add_node(char *string)
+t_output *add_node(char *string, int cursor, int key)
 {
     t_output *new_node;
     if (!(new_node = malloc(sizeof(t_output))))
         return (NULL);
     if (!(new_node->string = ft_strdup(string)))
         return (NULL);
+    new_node->cursor = cursor;
+    new_node->key = key;
     new_node->next = NULL;
     return(new_node);
 }
@@ -16,20 +18,23 @@ t_output *create_list(char **argv, int argc)
     t_output *node;
     t_output *ptr;
     int i;
+    int j;
 
     node = NULL;
     ptr = NULL;
     i = 0;
+    j = 0;
     while ((*++argv))
     {
       if (node == NULL)
       {
-        node = add_node(*argv);
+        node = add_node(*argv, 1, j++);
         ptr = node;
       }
       else
       {
-            node->next =  add_node(*argv);
+            node->next =  add_node(*argv, 0,j++);
+            ptr->tail = node->next;
             node = node->next;
       }
     }
@@ -148,21 +153,33 @@ void print_list()
 
     ptr = head_func(NULL);
     if (windows_size())
-   { 
-        tputs(us_string, 1, my_putchar);
-        tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
-        ft_putendl_fd(ptr->string, 2);
-        tputs(ue_string, 1, my_putchar);
-        ptr = ptr->next;
+    {
         while (ptr)
         {
-           tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
-           ft_putendl_fd(ptr->string, 2);
+           /* ft_putstr_fd("ptr->cursor --> ", 2);
+            ft_putnbr_fd(ptr->cursor, 2);
+            ft_putchar_fd('\n', 2);
+            ft_putstr_fd("ptr->key --> ", 2);
+            ft_putnbr_fd(ptr->key, 2);
+            ft_putchar_fd('\n', 2);
+             ptr = ptr->next;*/
+           //   tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
+           if (ptr->cursor == 1)
+           {
+                tputs(us_string, 1, my_putchar);
+                tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
+                ft_putendl_fd(ptr->string, 2);
+                tputs(ue_string, 1, my_putchar);
+           }
+           else
+           {
+                tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
+                ft_putendl_fd(ptr->string, 2);
+           }
            ptr = ptr->next;
         }
-        if (ptr == NULL)
-            tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
-   }
+        tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
+    }
    else 
        ft_putendl_fd("windows so small", 2);
 }

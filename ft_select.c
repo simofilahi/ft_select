@@ -65,36 +65,96 @@ void ft_termcap()
 {
     char *termtype;
     int success;
-     char buf2[30];
+    char buf2[30];
 	char *ap = buf2;
 
     termtype = getenv("TERM");
     success = tgetent(ap, termtype);
 }
 
+int finder_cursor()
+{
+    t_output *head_ref;
+
+    head_ref = head_func(NULL);
+    while (head_ref)
+    {
+        if (head_ref->cursor)
+        {
+            head_ref->cursor = 0;
+            return (head_ref->key);
+        }
+        head_ref = head_ref->next;
+    }
+    return (0);
+}
+
+void apply_new_postion_cursor(int key)
+{
+    t_output *head_ref;
+
+    head_ref = head_func(NULL);
+    if (key == 0)
+    {
+        head_ref->tail->cursor = 1;
+        return ;
+    }
+    while(head_ref)
+    {
+        if (head_ref->key + 1 == key)
+        {
+            head_ref->cursor = 1;
+            return ;
+        }
+        head_ref = head_ref->next;
+    }
+}
+
 void get_input()
 {
     int ch;
+    int key;
 
     while (1)
     {
         ch = 0;
         if (read(STDIN_FILENO, &ch, 4))
         {
-           if(ch == keyup || ch == keydown || ch == keyright || ch == keyleft)
-            {
-                write(2, &ch, 4);
-            }
-            else if(ch == esc)
+           if(ch == keyup)
+           {
+                key = finder_cursor();
+                apply_new_postion_cursor(key);
+                print_list();
+           }
+           else if (ch == keydown)
+           {
+
+           }
+           else if (ch == keyright)
+           {
+
+           }
+           else if (ch == keyleft)
+           {
+
+           }
+           else if(ch == esc)
             {   
                      normal_mode();
                      exit(0) ;
             }
-           /* else if(ch == delete)   
+            else if(ch == delete)
+            {
+
+            }
             else if(ch == backspace)
+            {
+
+            }
             else if(ch == space)
             {
-            }*/
+
+            }
         }
            
     }
@@ -103,7 +163,7 @@ void get_input()
 void ft_select()
 {
     tputs(ti_string, 1, my_putchar);
-    print_list();
+    print_list(0);
     get_input();
 }
 
