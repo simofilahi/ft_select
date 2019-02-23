@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <termios.h>
 #include <termcap.h>
+#include <signal.h>
 #include <sys/ioctl.h>
 #include "../libft/libft.h"
 

@@ -65,13 +65,96 @@ void ft_termios()
 void ft_termcap()
 {
     char *termtype;
-    int success;
+   // int success;
     char buf2[30];
 	char *ap = buf2;
 
     termtype = getenv("TERM");
-    success = tgetent(ap, termtype);
+    //success = 
+	tgetent(ap, termtype);
 }
+
+void reset_key()
+{
+	t_output *head_ref;
+
+	head_ref =  head_func(NULL);
+	int i = 0;
+	while (head_ref)
+	{
+		head_ref->key = i++;
+		head_ref = head_ref->next;
+	}
+}
+
+void	delete_node()
+{
+	t_output *head_ref;
+	t_output *temp;
+
+	head_ref = head_func(NULL);
+	if (head_ref->next == NULL)
+	{
+		free(head_ref->string);
+		free(head_ref);
+		normal_mode();
+	}
+	if (head_ref && head_ref->cursor == 1)
+	{
+		head_ref->next->cursor = 1;
+		if (head_ref->next != NULL)
+			head_func(&head_ref->next);
+		reset_key();
+		free(head_ref->string);
+		free(head_ref);
+		return ;
+	}
+	else
+	{
+		temp = head_ref;
+		while (head_ref && head_ref->cursor != 1)
+		{
+			temp = head_ref;
+			head_ref = head_ref->next;
+		}
+		temp->next = head_ref->next;
+		if (temp->next == NULL)
+			temp->cursor = 1;
+		else
+			temp->next->cursor = 1;
+		reset_key();
+		free(head_ref->string);
+		free(head_ref);
+	}
+}
+
+/*void	delete_node(int key)
+{
+	t_output *temp;
+	t_output *prev;
+	t_output *head_ref;
+	
+	head_ref = head_fucn(NULL);
+	if (head_ref->key == key)
+	{
+		if (head_ref->next != NULL)
+			head_func(head_ref->next);
+		free(head);
+		normal_mode;
+	}
+	temp = head_ref;
+		while ((temp != NULL) &&
+				(ft_strncmp(str, temp->var, ft_strlen(str)) != 0))
+		{
+			prev = temp;
+			temp = temp->next;
+		}
+		if (temp == NULL)
+			return ;
+		prev->next = temp->next;
+		free(temp);
+}*/
+
 
 int finder_cursor()
 {
@@ -80,8 +163,9 @@ int finder_cursor()
     head_ref = head_func(NULL);
     while (head_ref)
     {
-        if (head_ref->cursor)
+        if (head_ref->cursor == 1)
         {
+		ft_putendl_fd("error", 2);
             head_ref->cursor = 0;
             return (head_ref->key);
         }
@@ -135,14 +219,16 @@ void get_input()
            {
                 key = finder_cursor();
                 apply_new_postion_cursor(key, 1);
-                tputs(cl_string, 1, my_putchar);
+               // tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keydown)
            {
-                key = finder_cursor();
+               
+		 key = finder_cursor();
+		ft_putendl_fd("error", 2);
                 apply_new_postion_cursor(key, 0);
-                tputs(cl_string, 1, my_putchar);
+              //  tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keyright)
@@ -160,11 +246,15 @@ void get_input()
             }
             else if(ch == delete)
             {
-
+		delete_node();
+                tputs(cl_string, 1, my_putchar);
+		print_list();
             }
             else if(ch == backspace)
             {
-
+		delete_node();
+                tputs(cl_string, 1, my_putchar);
+		print_list();
             }
             else if(ch == space)
             {

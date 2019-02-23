@@ -17,12 +17,12 @@ t_output *create_list(char **argv, int argc)
 {
     t_output *node;
     t_output *ptr;
-    int i;
+//    int i;
     int j;
 
     node = NULL;
     ptr = NULL;
-    i = 0;
+  //  i = 0;
     j = 0;
     while ((*++argv))
     {
