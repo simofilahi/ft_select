@@ -71,6 +71,7 @@ t_output		*create_list(char **argv, int argc);
 void			ft_select();
 int				my_putchar(int c);
 int				main(int argc, char **argv);
+int				ft_selected();
 void			ft_termios();
 t_output		*head_func(t_output **ptr);
 void			signal_handler(int sign);
@@ -78,5 +79,18 @@ void			print_in_stdout();
 void			ft_termcap();
 void			ft_termios();
 void			get_input();
+void			apply_new_postion_cursor(int key, int flag);
+int				finder_cursor();
+void			delete_node();
+void			ft_signal();
+void			reset_cursor();
+int				reset_key();
+void			init_tail();
+int				last_selected_elem();
+void			print_in_stdout();
+void			init_coor();
+void			normal_mode();
+void			fill_pos();
+int				long_string();
 
 #endif
