@@ -96,6 +96,18 @@ void reset_cursor()
 	head_ref->cursor = 1;
 }
 
+void init_tail()
+{
+	t_output *head_ref;
+	t_output *current;
+
+	head_ref = head_func(NULL);
+	current = head_func(NULL);
+	while (head_ref->next)
+		head_ref = head_ref->next;
+	current->tail = head_ref;
+}
+
 void	delete_node()
 {
 	t_output *head_ref;
@@ -117,6 +129,7 @@ void	delete_node()
 		temp->llen = reset_key();
 		free(head_ref->string);
 		free(head_ref);
+		init_tail();
 		return ;
 	}
 	else
@@ -135,6 +148,7 @@ void	delete_node()
 		temp->llen = reset_key();
 		free(head_ref->string);
 		free(head_ref);
+		init_tail();
 		return ;
 	}
 }
@@ -248,7 +262,7 @@ void apply_new_postion_cursor(int key, int flag)
         head_ref->tail->cursor = 1;
         return ;
     }
-    if (head_ref->llen == key && !flag)
+    if (head_ref->tail->key == key && !flag)
     {
         head_ref->cursor = 1;
         return ;
@@ -269,6 +283,33 @@ void apply_new_postion_cursor(int key, int flag)
     }
 }
 
+
+int ft_selected()
+{
+	t_output *head_ref;
+
+	head_ref = head_func(NULL);
+	while(head_ref)
+	{
+		
+		if (head_ref->cursor == 1)
+		{
+			if (head_ref->cursor == head_ref->selected)
+			{
+				head_ref->selected = 0;
+				return (1);
+			}
+			else
+			{	
+				head_ref->selected = 1;
+				return(0);
+			}	
+		}
+		head_ref = head_ref->next;
+	}
+	return (0);
+}
+
 void get_input()
 {
     int ch;
@@ -283,7 +324,7 @@ void get_input()
            {
                 key = finder_cursor();
                 apply_new_postion_cursor(key, 1);
-               // tputs(cl_string, 1, my_putchar);
+  //               tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keydown)
@@ -291,7 +332,7 @@ void get_input()
                
 		 key = finder_cursor();
                 apply_new_postion_cursor(key, 0);
-         //       tputs(cl_string, 1, my_putchar);
+//                tputs(cl_string, 1, my_putchar);
                 print_list();
            }
            else if (ch == keyright)
@@ -310,7 +351,7 @@ void get_input()
             else if(ch == delete)
             {
 		delete_node();
-           //     tputs(cl_string, 1, my_putchar);
+                tputs(cl_string, 1, my_putchar);
 		print_list();
             }
             else if(ch == backspace)
@@ -321,12 +362,22 @@ void get_input()
             }
             else if(ch == space)
             {
-
+			if (!ft_selected())
+			{
+		 		key = finder_cursor();
+                		apply_new_postion_cursor(key, 0);
+			}
+			else
+			{
+		 		key = finder_cursor();
+                		apply_new_postion_cursor(key, 0);
+			}		
+			print_list();
             }
         }
            
     }
-} 
+}
 
 void ft_select()
 {

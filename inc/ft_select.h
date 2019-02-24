@@ -17,6 +17,7 @@
 #define esc 27
 #define delete 2117294875
 #define backspace 127
+#define enter 10
 #define space 32
 
 
