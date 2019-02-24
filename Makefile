@@ -1,5 +1,5 @@
 NAME= ft_select
-SRCS= *.c
+SRCS= srcs/*.c
 CC= gcc
 CFLAGS= -Wall -Werror -Wextra
 INC= inc/.

@@ -6,11 +6,11 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:23:34 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 21:44:24 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/24 23:49:20 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/ft_select.h"
+#include "../inc/ft_select.h"
 
 t_output	*head_func(t_output **ptr)
 {

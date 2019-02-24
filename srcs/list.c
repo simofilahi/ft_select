@@ -6,11 +6,11 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:35:22 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 21:43:03 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/24 23:49:48 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/ft_select.h"
+#include "../inc/ft_select.h"
 
 t_output	*add_node(char *string, int cursor, int key)
 {

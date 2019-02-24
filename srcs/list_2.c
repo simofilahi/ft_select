@@ -6,11 +6,11 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:52:21 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 22:01:09 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/24 23:50:03 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/ft_select.h"
+#include "../inc/ft_select.h"
 
 void	fill_pos_2(int y)
 {

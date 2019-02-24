@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 19:25:50 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 19:38:20 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/24 23:36:21 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@
 # define BACKSPACE 127
 # define ENTER 10
 # define SPACE 32
-# define  STDIN_FILENO 0
+# define STDIN_FILENO 0
 # define TI_STRING tgetstr("ti", NULL)
 # define TE_STRING tgetstr("te", NULL)
 # define US_STRING tgetstr("us", NULL)

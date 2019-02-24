@@ -6,11 +6,34 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 22:02:10 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 22:20:43 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/24 23:50:16 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "inc/ft_select.h"
+#include "../inc/ft_select.h"
+
+void	delete_node_2(void)
+{
+	t_output	*head_ref;
+	t_output	*temp;
+
+	head_ref = head_func(NULL);
+	temp = head_ref;
+	while (head_ref && head_ref->cursor != 1)
+	{
+		temp = head_ref;
+		head_ref = head_ref->next;
+	}
+	temp->next = head_ref->next;
+	if (temp->next == NULL)
+		temp->cursor = 1;
+	else
+		temp->next->cursor = 1;
+	temp->llen = reset_key();
+	free(head_ref->position);
+	free(head_ref);
+	init_tail();
+}
 
 void	delete_node(void)
 {
@@ -21,6 +44,7 @@ void	delete_node(void)
 	temp = head_func(NULL);
 	if (head_ref->next == NULL && head_ref->key == 0)
 	{
+		free(head_ref->position);
 		free(head_ref);
 		normal_mode();
 	}
@@ -30,102 +54,13 @@ void	delete_node(void)
 		temp = head_func(NULL);
 		reset_cursor();
 		temp->llen = reset_key();
+		free(head_ref->position);
 		free(head_ref);
 		init_tail();
 		return ;
 	}
 	else
-	{
-		temp = head_ref;
-		while (head_ref && head_ref->cursor != 1)
-		{
-			temp = head_ref;
-			head_ref = head_ref->next;
-		}
-		temp->next = head_ref->next;
-		if (temp->next == NULL)
-			temp->cursor = 1;
-		else
-			temp->next->cursor = 1;
-		temp->llen = reset_key();
-		free(head_ref);
-		init_tail();
-		return ;
-	}
-}
-
-int		finder_cursor(void)
-{
-	t_output *head_ref;
-	
-	head_ref = head_func(NULL);
-	while (head_ref)
-	{
-		if (head_ref->cursor == 1)
-		{
-			head_ref->cursor = 0;
-			return (head_ref->key);
-		}
-		head_ref = head_ref->next;
-	}
-	return (0);
-}
-
-void	apply_new_postion_cursor(int key, int flag)
-{
-	t_output *head_ref;
-	
-	head_ref = head_func(NULL);
-	if (key == 0 && flag)
-	{
-		head_ref->tail->cursor = 1;
-		return ;
-	}
-	if (head_ref->tail->key == key && !flag)
-	{
-		head_ref->cursor = 1;
-		return ;
-	}
-	while(head_ref)
-	{
-		if (head_ref->key - 1 == key)
-		{
-			head_ref->cursor = 1;
-			return ;
-		}
-		if (head_ref->key + 1 == key && flag)
-		{
-			head_ref->cursor = 1;
-			return ;
-		}
-		head_ref = head_ref->next;
-	}
-}
-
-int		ft_selected(void)
-{
-	t_output *head_ref;
-	
-	head_ref = head_func(NULL);
-	while (head_ref)
-	{
-
-		if (head_ref->cursor == 1)
-		{
-			if (head_ref->cursor == head_ref->selected)
-			{
-				head_ref->selected = 0;
-				return (1);
-			}
-			else
-			{	
-				head_ref->selected = 1;
-				return(0);
-			}	
-		}
-		head_ref = head_ref->next;
-	}
-	return (0);
+		delete_node_2();
 }
 
 void	get_input_3(int ch, int key)
@@ -153,7 +88,7 @@ void	get_input_3(int ch, int key)
 void	get_input_2(int ch, int key)
 {
 	if (ch == ESC)
-	{   
+	{
 		normal_mode();
 		exit(0);
 	}
@@ -171,12 +106,11 @@ void	get_input_2(int ch, int key)
 	}
 	else
 		get_input_3(ch, key);
-
 }
 
 void	get_input(void)
 {
-	int ch;
+	int	ch;
 	int key;
 
 	while (1)
