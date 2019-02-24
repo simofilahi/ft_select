@@ -6,11 +6,12 @@ void fill_pos_2(int y)
 	t_output *ptrnode;
 	t_output *var;
 	int i;
+    int j;
 
 	ptrnode = head_func(NULL);
 	var = ptrnode;
 	i = 0;
-	int j = 0;
+    j = 0;
 	while (ptrnode)
 	{
 		ptrnode->position->vpos = i++;
@@ -28,13 +29,15 @@ int ft_calcule()
 {
 	t_output *ptrnode;
 	float x;
+	float y;
 	int l_string;
 
 	ptrnode = head_func(NULL);
 	x = ptrnode->llen / ptrnode->max.ws_row;
 	l_string = long_string();
-	int y = x * (l_string + 6);
-	if (y < ptrnode->max.ws_col)
+    y = x * (l_string + 6);
+	y += y - ((int)y / 2);
+	if ((int)y < ptrnode->max.ws_col)
 	{
 		fill_pos_2(l_string + 6);
 		return (1);
@@ -49,17 +52,33 @@ int windows_size()
 
 	ptrnode = head_func(NULL);
 	ioctl(0, TIOCGWINSZ , &ptrnode->max);
-	if (ptrnode->max.ws_row > ptrnode->llen)
+	if (ptrnode->max.ws_row > ptrnode->tail->key)
 	{
 		fill_pos();
 		return (1);
 	}
-	else if (ptrnode->max.ws_row < ptrnode->llen)
+	else if (ptrnode->max.ws_row < ptrnode->tail->key)
 	{
 		if (ft_calcule())
 			return (1);
 	}
 	return (0);
+}
+
+void print_list2(t_output *head_ref)
+{
+    if (head_ref->cursor && !(head_ref->selected))
+	{
+		tputs(US_STRING, 1, my_putchar);
+		tputs(tgoto(GOTOSTR, head_ref->position->hpos, head_ref->position->vpos), 1, my_putchar);
+		ft_putendl_fd(head_ref->string, 2);
+		tputs(UE_STRING, 1, my_putchar);
+	}
+	else
+	{		
+		tputs(tgoto(GOTOSTR, head_ref->position->hpos, head_ref->position->vpos), 1, my_putchar);
+		ft_putendl_fd(head_ref->string, 2);
+    }
 }
 
 void print_list()
@@ -79,18 +98,8 @@ void print_list()
 				ft_putendl_fd(ptr->string, 2);
 				tputs(ME_STRING, 1, my_putchar);			
 			}
-			else if (ptr->cursor && !ptr->selected)
-			{
-				tputs(US_STRING, 1, my_putchar);
-				tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
-				ft_putendl_fd(ptr->string, 2);
-				tputs(UE_STRING, 1, my_putchar);
-			}
-			else
-			{		
-				tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
-				ft_putendl_fd(ptr->string, 2);
-			}
+            else
+                print_list2(ptr);
 			ptr = ptr->next;
 		}
 	}
