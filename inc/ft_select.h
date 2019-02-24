@@ -14,7 +14,6 @@
 # define FT_SELECT_H
 # include <stdlib.h>
 # include <unistd.h>
-# include <stdio.h>
 # include <termios.h>
 # include <termcap.h>
 # include <signal.h>
@@ -28,6 +27,7 @@
 # define BACKSPACE 127
 # define ENTER 10
 # define SPACE 32
+# define  STDIN_FILENO 0
 # define TI_STRING tgetstr("ti", NULL)
 # define TE_STRING tgetstr("te", NULL)
 # define US_STRING tgetstr("us", NULL)
