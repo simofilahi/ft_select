@@ -16,8 +16,8 @@ void normal_mode()
     t_output *ptr;
 
     ptr = head_func(NULL);
-    tputs(te_string, 1, my_putchar);
-    tputs(ve_string, 1, my_putchar);
+    tputs(TE_STRING, 1, my_putchar);
+    tputs(VE_STRING, 1, my_putchar);
     tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
     exit(0);
 }
@@ -28,8 +28,25 @@ void	signal_handler(int sign)
         normal_mode();
     if (sign == SIGWINCH)
     {
-        tputs(cl_string, 1, my_putchar);
+        tputs(CL_STRING, 1, my_putchar);
         print_list();
+    }
+    if (sign == SIGTSTP)
+    {
+        t_output *ptr;
+
+         ptr = head_func(NULL);
+        tputs(TE_STRING, 1, my_putchar);
+        tputs(VE_STRING, 1, my_putchar);
+        tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
+        signal(SIGTSTP, SIG_DFL);
+        ioctl(0, TIOCSTI, "\x1A");
+    }
+    else if (sign == SIGCONT)
+    {
+        ft_termios();
+        ft_termcap();
+        ft_select();
     }
 }
 
@@ -37,6 +54,8 @@ void ft_signal()
 {
     signal(SIGINT, signal_handler);
     signal(SIGWINCH, signal_handler);
+    signal(SIGTSTP,signal_handler);
+    signal(SIGCONT, signal_handler);
 }
 
 int my_putchar(int c)
@@ -50,11 +69,11 @@ void ft_termios()
     t_output *head_ref;
 
     head_ref = head_func(NULL);
-    head_ref->ptr = malloc(sizeof(struct follower));
+    head_ref->ptr = malloc(sizeof(struct s_follower));
     if (!isatty(STDIN_FILENO))
         ft_putendl_fd("error file descriptor not pointing to a tty", 2);
     if (tcgetattr(STDIN_FILENO, &(head_ref->ptr)->oldconfig))
-        ft_putendl_fd("error can't get the current configuration", 2);
+        ft_putendl_fd("error can't get the current configuration", STDIN_FILENO);
     head_ref->ptr->newconfig = head_ref->ptr->oldconfig;
     head_ref->ptr->newconfig.c_lflag &= ~(ECHO | ICANON);
     if (tcsetattr(STDIN_FILENO, TCSANOW, &(head_ref->ptr)->newconfig) < 0)
@@ -64,13 +83,22 @@ void ft_termios()
 void ft_termcap()
 {
     char *termtype;
-   // int success;
+    int success;
     char buf2[30];
 	char *ap = buf2;
 
     termtype = getenv("TERM");
-    //success = 
-	tgetent(ap, termtype);
+    if (termtype == NULL)
+    {
+        ft_putendl_fd("variable TERM not found", 2);
+        normal_mode();
+    }
+    success = tgetent(ap, termtype);
+    if (success == -1)
+    {
+        ft_putendl_fd("set a valid TERM value *_-)", 2);
+        normal_mode();
+    }
 }
 
 int  reset_key()
@@ -107,7 +135,7 @@ void init_tail()
 	current->tail = head_ref;
 }
 
-void	delete_node()
+/*void	delete_node()
 {
 	t_output *head_ref;
 	t_output *temp;
@@ -226,32 +254,50 @@ int ft_selected()
 		head_ref = head_ref->next;
 	}
 	return (0);
+}*/
+
+int last_selected_elem()
+{
+    t_output *head_ref;
+
+    head_ref = head_func(NULL);
+    int key;
+    key = 0;
+    while (head_ref)
+    {
+        if (head_ref->selected)
+            key = head_ref->key;
+        head_ref = head_ref->next;
+    }
+    return (key);
 }
 
 void print_in_stdout()
 {
     t_output *ptr;
+    t_output *head_ref;
+    int key;
 
     ptr = head_func(NULL);
-    tputs(te_string, 1, my_putchar);
-    tputs(ve_string, 1, my_putchar);
+    tputs(TE_STRING, 1, my_putchar);
+    tputs(VE_STRING, 1, my_putchar);
     tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
-	t_output *head_ref;
-
 	head_ref = head_func(NULL);
+    key = last_selected_elem();
 	while (head_ref)
 	{
 		if (head_ref->selected)
 		{
 			ft_putstr_fd(head_ref->string, 1);
-			ft_putchar_fd(' ', 1);
+            if (head_ref->key != key)
+			    ft_putchar_fd(' ', 1);
 		}
 		head_ref = head_ref->next;	
 	}
 	exit(0);
 }
 
-void get_input()
+/*void get_input()
 {
     int ch;
     int key;
@@ -261,79 +307,69 @@ void get_input()
         ch = 0;
         if (read(STDIN_FILENO, &ch, 4))
         {
-           if(ch == keyup)
+           if(ch == KEYUP)
            {
                 key = finder_cursor();
                 apply_new_postion_cursor(key, 1);
-  //               tputs(cl_string, 1, my_putchar);
                 print_list();
            }
-           else if (ch == keydown)
+           else if (ch == KEYDOWN)
            {
                
-		 key = finder_cursor();
+		         key = finder_cursor();
                 apply_new_postion_cursor(key, 0);
-//                tputs(cl_string, 1, my_putchar);
                 print_list();
            }
-           else if (ch == keyright)
-           {
-
-           }
-           else if (ch == keyleft)
-           {
-
-           }
-           else if(ch == esc)
+           else if(ch == ESC)
             {   
                      normal_mode();
                      exit(0) ;
             }
-            else if(ch == delete)
+            else if(ch == DELETE)
             {
-		delete_node();
-                tputs(cl_string, 1, my_putchar);
-		print_list();
+		        delete_node();
+                tputs(CL_STRING, 1, my_putchar);
+		        print_list();
             }
-            else if(ch == backspace)
+            else if(ch == BACKSPACE)
             {
-		delete_node();
-                tputs(cl_string, 1, my_putchar);
-		print_list();
+		        delete_node();
+                tputs(CL_STRING, 1, my_putchar);
+		        print_list();
             }
-            else if(ch == space)
+            else if(ch == SPACE)
             {
-			if (!ft_selected())
-			{
-		 		key = finder_cursor();
+			    if (!ft_selected())
+			    {
+		 		        key = finder_cursor();
                 		apply_new_postion_cursor(key, 0);
-			}
-			else
-			{
-		 		key = finder_cursor();
+			    }
+			    else
+			    {
+		 		        key = finder_cursor();
                 		apply_new_postion_cursor(key, 0);
-			}		
-			print_list();
+			    }		
+			    print_list();
             }
-	   else if (ch == enter)
-		{
-			print_in_stdout();
-	 	}
+	        else if (ch == ENTER)
+		    {
+			    print_in_stdout();
+	 	    }
         }
            
     }
-}
+}*/
 
 void ft_select()
 {
-    tputs(ti_string, 1, my_putchar);
+    tputs(TI_STRING, 1, my_putchar);
     print_list(0);
     get_input();
 }
 
 void init_coor()
 {
-    struct coordone p;
+    struct s_coordone p;
 
     p.vpos = 0;
     p.hpos = 0;
@@ -343,7 +379,6 @@ int main(int argc, char **argv)
 {
     t_output *head;
 
-    SIG_NUM = 0;
     if (argc == 1)
     {
         ft_putstr_fd("Usage : ", 2);

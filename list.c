@@ -10,7 +10,7 @@ t_output *add_node(char *string, int cursor, int key)
 	new_node->cursor = cursor;
 	new_node->key = key;
 	new_node->selected = 0;
-	new_node->position = malloc(sizeof(struct coordone));
+	new_node->position = malloc(sizeof(struct s_coordone));
 	new_node->next = NULL;
 	return(new_node);
 }
@@ -69,7 +69,6 @@ void fill_pos()
 	i = 0;
 	while (ptrnode)
 	{
-		//ptrnode->position = malloc(sizeof(struct coordone));
 		ptrnode->position->vpos = i++;
 		ptrnode->position->hpos = 0;
 		ptrnode = ptrnode->next;
@@ -89,11 +88,8 @@ void fill_pos_2(int y)
 	int j = 0;
 	while (ptrnode)
 	{
-		//ptrnode->position = malloc(sizeof(struct coordone));
 		ptrnode->position->vpos = i++;
 		ptrnode->position->hpos = y * j;
-		// fprintf(stderr, "ptrnode->position->vpos %d \n", ptrnode->position->vpos);
-		// fprintf(stderr, "ptrnode->position->hpos %d \n", ptrnode->position->hpos);
 		ptrnode = ptrnode->next;
 		if (i == var->max.ws_row - 1)
 		{
@@ -111,16 +107,8 @@ int ft_calcule()
 
 	ptrnode = head_func(NULL);
 	x = ptrnode->llen / ptrnode->max.ws_row;
-	/* fprintf(stderr, "max.ws_row %d\n", ptrnode->max.ws_row);
-	   fprintf(stderr, "max.ws_col %d\n", ptrnode->max.ws_col);
-	   fprintf(stderr, "ptrnode->llen %d\n", ptrnode->llen);
-	   fprintf(stderr, "x ==> %f\n", x);
-	   ft_putchar('\n');*/
 	l_string = long_string();
-	// fprintf(stderr, "l_string ==> %d\n", l_string);
 	int y = x * (l_string + 6);
-	// fprintf(stderr, "y ==> %d\n", y);
-	//fprintf(stderr, "ptrnode->max.ws_col %d\n", ptrnode->max.ws_col);
 	if (y < ptrnode->max.ws_col)
 	{
 		fill_pos_2(l_string + 6);
@@ -156,7 +144,7 @@ void print_list()
 	ptr = head_func(NULL);
 	if (windows_size())
 	{
-		tputs(vi_string, 1, my_putchar);
+		tputs(VI_STRING, 1, my_putchar);
 		//ft_putstr_fd("tail->key ==> ", 2);
 		//ft_putnbr_fd(ptr->tail->key, 2);
 		//ft_putchar_fd('\n', 2);
@@ -177,37 +165,37 @@ void print_list()
 		//	   ft_putchar_fd('\n', 2);
 			   ft_putendl_fd("=========================================", 2);
 			   ptr = ptr->next;*/
-			 //tputs(tgoto(gotostr, 0, 0), 1, my_putchar);*/
+			 //tputs(tgoto(GOTOSTR, 0, 0), 1, my_putchar);*/
 			if (ptr->selected)
 			{
 			//	if (ptr->cursor == 0)
 			//	{
-					tputs(mr_string, 1, my_putchar);
-					tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
+					tputs(MR_STRING, 1, my_putchar);
+					tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
 					ft_putendl_fd(ptr->string, 2);
-					tputs(me_string, 1, my_putchar);
+					tputs(ME_STRING, 1, my_putchar);
 			//	}
 			//	if ()
 			//	{
-			//		tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
+			//		tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
 			//		ft_putendl_fd(ptr->string, 2);		
 			//	}				
 			}
 			else if (ptr->cursor && !ptr->selected)
 			{
-				tputs(us_string, 1, my_putchar);
-				tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
+				tputs(US_STRING, 1, my_putchar);
+				tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
 				ft_putendl_fd(ptr->string, 2);
-				tputs(ue_string, 1, my_putchar);
+				tputs(UE_STRING, 1, my_putchar);
 			}
 			else
 			{		
-				tputs(tgoto(gotostr, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
+				tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos), 1, my_putchar);
 				ft_putendl_fd(ptr->string, 2);
 			}
 			ptr = ptr->next;
 		}
-		//tputs(tgoto(gotostr, 0, 0), 1, my_putchar);
+		//tputs(tgoto(GOTOSTR, 0, 0), 1, my_putchar);
 	}
 	else 
 		ft_putendl_fd("windows so small", 2);
