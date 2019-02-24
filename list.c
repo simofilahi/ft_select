@@ -10,6 +10,7 @@ t_output *add_node(char *string, int cursor, int key)
 	new_node->cursor = cursor;
 	new_node->key = key;
 	new_node->selected = 0;
+	new_node->position = malloc(sizeof(struct coordone));
 	new_node->next = NULL;
 	return(new_node);
 }
@@ -68,7 +69,7 @@ void fill_pos()
 	i = 0;
 	while (ptrnode)
 	{
-		ptrnode->position = malloc(sizeof(struct coordone));
+		//ptrnode->position = malloc(sizeof(struct coordone));
 		ptrnode->position->vpos = i++;
 		ptrnode->position->hpos = 0;
 		ptrnode = ptrnode->next;
@@ -88,7 +89,7 @@ void fill_pos_2(int y)
 	int j = 0;
 	while (ptrnode)
 	{
-		ptrnode->position = malloc(sizeof(struct coordone));
+		//ptrnode->position = malloc(sizeof(struct coordone));
 		ptrnode->position->vpos = i++;
 		ptrnode->position->hpos = y * j;
 		// fprintf(stderr, "ptrnode->position->vpos %d \n", ptrnode->position->vpos);

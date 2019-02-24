@@ -1,6 +1,5 @@
 #include "inc/ft_select.h"
 
-
 t_output *head_func(t_output **ptr)
 {
     static t_output *head_ref;
@@ -117,7 +116,7 @@ void	delete_node()
 	temp = head_func(NULL);
 	if (head_ref->next == NULL && head_ref->key == 0)
 	{
-		free(head_ref->string);
+	//	free(head_ref->string);
 		free(head_ref);	
 		normal_mode();	
 	}
@@ -127,7 +126,7 @@ void	delete_node()
 		temp = head_func(NULL);
 		reset_cursor();
 		temp->llen = reset_key();
-		free(head_ref->string);
+	//	free(head_ref->string);
 		free(head_ref);
 		init_tail();
 		return ;
@@ -152,34 +151,6 @@ void	delete_node()
 		return ;
 	}
 }
-
-/*void	delete_node(int key)
-{
-	t_output *temp;
-	t_output *prev;
-	t_output *head_ref;
-	
-	head_ref = head_fucn(NULL);
-	if (head_ref->key == key)
-	{
-		if (head_ref->next != NULL)
-			head_func(head_ref->next);
-		free(head);
-		normal_mode;
-	}
-	temp = head_ref;
-		while ((temp != NULL) &&
-				(ft_strncmp(str, temp->var, ft_strlen(str)) != 0))
-		{
-			prev = temp;
-			temp = temp->next;
-		}
-		if (temp == NULL)
-			return ;
-		prev->next = temp->next;
-		free(temp);
-}*/
-
 
 int finder_cursor()
 {
@@ -198,59 +169,6 @@ int finder_cursor()
     return (0);
 }
 
-/*int reset_key()
-{
-	t_output *head_ref;
-
-	head_ref = head_func(NULL);
-	int i = 0;
-	while (head_ref)
-	{
-		head_ref->key = i++;
-		head_ref = head_ref->next;
-	}
- return (i);
-}
-
-void delete_node()
-{
-	t_output *head_ref;
-	t_output *temp;
-
-	head_ref = head_func(NULL);
-	if (head_ref && head_ref->cursor == 1)
-	{
-		head_ref->next->cursor = 1;
-		temp = head_func(&head_ref->next);
-		temp->llen = reset_key();
-		free(head_ref->string);
-		free(head_ref);
-		if (temp->next == NULL)
-			normal_mode();
-		return ;
-	}
-	else
-	{
-		temp = head_ref;
-		while (head_ref && head_ref->cursor != 1)
-		{
-			temp = head_ref;
-			head_ref = head_ref->next;
-		}
-		temp->next = head_ref->next;
-		if (temp->next == NULL)
-		{
-			//t_output *current = head_func(NULL);
-			temp->cursor = 1;
-		}
-		else
-			temp->next->cursor = 1;
-		free(head_ref->string);
-		free(head_ref);
-		return ;
-	}
-	normal_mode();
-}*/
 
 void apply_new_postion_cursor(int key, int flag)
 {
@@ -415,11 +333,10 @@ void ft_select()
 
 void init_coor()
 {
-    struct coordone *p;
+    struct coordone p;
 
-    p = malloc(sizeof(struct coordone));
-    p->vpos = 0;
-    p->hpos = 0;
+    p.vpos = 0;
+    p.hpos = 0;
 }
 
 int main(int argc, char **argv)
@@ -434,11 +351,11 @@ int main(int argc, char **argv)
         return (0);
     }
     ft_signal();
+	init_coor();
     head = create_list(argv, argc);
     head_func(&head);
     ft_termios();
     ft_termcap();
-    init_coor();
     ft_select();
     return (0);
 }
