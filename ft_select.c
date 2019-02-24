@@ -310,6 +310,29 @@ int ft_selected()
 	return (0);
 }
 
+void print_in_stdout()
+{
+    t_output *ptr;
+
+    ptr = head_func(NULL);
+    tputs(te_string, 1, my_putchar);
+    tputs(ve_string, 1, my_putchar);
+    tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
+	t_output *head_ref;
+
+	head_ref = head_func(NULL);
+	while (head_ref)
+	{
+		if (head_ref->selected)
+		{
+			ft_putstr_fd(head_ref->string, 1);
+			ft_putchar_fd(' ', 1);
+		}
+		head_ref = head_ref->next;	
+	}
+	exit(0);
+}
+
 void get_input()
 {
     int ch;
@@ -374,6 +397,10 @@ void get_input()
 			}		
 			print_list();
             }
+	   else if (ch == enter)
+		{
+			print_in_stdout();
+	 	}
         }
            
     }

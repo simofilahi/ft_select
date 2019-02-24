@@ -70,5 +70,6 @@ int main(int argc, char **argv);
 void ft_termios();
 t_output *head_func(t_output **ptr);
 void	signal_handler(int sign);
+void	 print_in_stdout();
 
 #endif
