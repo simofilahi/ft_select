@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:44:43 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 23:51:02 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/25 16:04:13 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	print_in_stdout(void)
 		}
 		head_ref = head_ref->next;
 	}
+	free_list();
 	exit(0);
 }
 
@@ -74,4 +75,10 @@ void	reset_cursor(void)
 
 	head_ref = head_func(NULL);
 	head_ref->cursor = 1;
+}
+
+int		my_putchar(int c)
+{
+	write(2, &c, 1);
+	return (0);
 }

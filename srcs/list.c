@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:35:22 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 23:49:48 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/25 15:48:41 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,19 @@ t_output	*create_list(char **argv, int argc)
 		}
 	}
 	ptr->llen = argc - 2;
+	ptr->ptr = malloc(sizeof(struct s_follower));
 	return (ptr);
+}
+
+t_output	*head_func(t_output **ptr)
+{
+	static t_output	*head_ref;
+
+	if (ptr == NULL)
+		return (head_ref);
+	else
+		head_ref = (*ptr);
+	return (head_ref);
 }
 
 int			long_string(void)

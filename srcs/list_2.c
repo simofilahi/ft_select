@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:52:21 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 23:50:03 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/25 16:14:12 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,15 +40,17 @@ int		ft_calcule(void)
 {
 	t_output	*ptrnode;
 	float		x;
-	float		y;
+	int			y;
 	int			l_string;
 
 	ptrnode = head_func(NULL);
 	x = ptrnode->tail->key / ptrnode->max.ws_row;
 	l_string = long_string();
-	y = x * (l_string + (6 * (x - 1)));
-	if ((int)y < ptrnode->max.ws_col)
+	y = ((x + 2) * l_string) + (6 * (x + 1));
+	if (y < ptrnode->max.ws_col)
 	{
+		if ((ptrnode->tail->position->hpos + l_string) >= ptrnode->max.ws_col)
+			return (0);
 		fill_pos_2(l_string + 6);
 		return (1);
 	}
@@ -64,12 +66,15 @@ int		windows_size(void)
 	ptrnode = head_func(NULL);
 	l_string = long_string();
 	ioctl(0, TIOCGWINSZ, &ptrnode->max);
-	if (ptrnode->tail->key < ptrnode->max.ws_row && (l_string * 2) < ptrnode->max.ws_col)
+	head_func(&ptrnode);
+	if (ptrnode->tail->key < ptrnode->max.ws_row)
 	{
+		if ((l_string + 6) >= ptrnode->max.ws_col)
+			return (0);
 		fill_pos();
 		return (1);
 	}
-	else if (ptrnode->tail->key > ptrnode->max.ws_row && ((ptrnode->tail->position->hpos + l_string) < ptrnode->max.ws_col))
+	else
 	{
 		if (ft_calcule())
 			return (1);
@@ -107,11 +112,13 @@ void	print_list(void)
 		{
 			if (ptr->selected)
 			{
+				tputs(US_STRING, 1, my_putchar);
 				tputs(MR_STRING, 1, my_putchar);
 				tputs(tgoto(GOTOSTR, ptr->position->hpos, ptr->position->vpos),
 						1, my_putchar);
 				ft_putendl_fd(ptr->string, 2);
 				tputs(ME_STRING, 1, my_putchar);
+				tputs(UE_STRING, 1, my_putchar);
 			}
 			else
 				print_list2(ptr);

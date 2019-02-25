@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 19:25:50 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/24 23:36:21 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/25 15:31:10 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ typedef	struct	s_output
 	int					selected;
 	int					key;
 	int					llen;
-	struct s_follower		*ptr;
-	struct s_coordone		*position;
+	struct s_follower	*ptr;
+	struct s_coordone	*position;
 	struct winsize		max;
 	struct s_output		*next;
 	struct s_output		*tail;
@@ -87,10 +87,14 @@ void			reset_cursor();
 int				reset_key();
 void			init_tail();
 int				last_selected_elem();
-void			print_in_stdout();
 void			init_coor();
 void			normal_mode();
 void			fill_pos();
+void			fill_pos_2(int y);
 int				long_string();
+void			free_list();
+int				ft_calcule(void);
+int				windows_size(void);
+void			print_list2(t_output *head_ref);
 
 #endif
