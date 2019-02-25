@@ -51,7 +51,8 @@ void	ft_signal(void)
 void	init_coor(void)
 {
 	struct s_coordone	p;
-
+	
+	(void)p;
 	p.vpos = 0;
 	p.hpos = 0;
 }

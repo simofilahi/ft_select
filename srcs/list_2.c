@@ -44,10 +44,9 @@ int		ft_calcule(void)
 	int			l_string;
 
 	ptrnode = head_func(NULL);
-	x = ptrnode->llen / ptrnode->max.ws_row;
+	x = ptrnode->tail->key / ptrnode->max.ws_row;
 	l_string = long_string();
-	y = x * (l_string + 6);
-	y += y - ((int)y / 2);
+	y = x * (l_string + (6 * (x - 1)));
 	if ((int)y < ptrnode->max.ws_col)
 	{
 		fill_pos_2(l_string + 6);
@@ -65,13 +64,12 @@ int		windows_size(void)
 	ptrnode = head_func(NULL);
 	l_string = long_string();
 	ioctl(0, TIOCGWINSZ, &ptrnode->max);
-	if (ptrnode->tail->key < ptrnode->max.ws_row &&
-			l_string + 6 < ptrnode->max.ws_col)
+	if (ptrnode->tail->key < ptrnode->max.ws_row && (l_string * 2) < ptrnode->max.ws_col)
 	{
 		fill_pos();
 		return (1);
 	}
-	else if (ptrnode->tail->key > ptrnode->max.ws_row)
+	else if (ptrnode->tail->key > ptrnode->max.ws_row && ((ptrnode->tail->position->hpos + l_string) < ptrnode->max.ws_col))
 	{
 		if (ft_calcule())
 			return (1);
@@ -121,5 +119,5 @@ void	print_list(void)
 		}
 	}
 	else
-		ft_putendl_fd("windows so small", 2);
+		ft_putendl_fd("windows so small !!!", 2);
 }
