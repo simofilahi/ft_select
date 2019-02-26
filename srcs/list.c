@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:35:22 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/25 18:00:34 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 12:42:15 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ t_output	*add_node(char *string, int cursor, int key)
 	new_node->cursor = cursor;
 	new_node->key = key;
 	new_node->selected = 0;
+	new_node->x = 0;
 	new_node->position = malloc(sizeof(struct s_coordone));
 	new_node->next = NULL;
 	return (new_node);

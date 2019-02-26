@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 19:25:50 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/25 15:31:10 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 12:41:15 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef	struct	s_output
 	int					selected;
 	int					key;
 	int					llen;
+	int					x;
 	struct s_follower	*ptr;
 	struct s_coordone	*position;
 	struct winsize		max;
