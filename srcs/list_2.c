@@ -40,64 +40,86 @@ void	fill_pos_2(int y)
 	}
 }
 
-int ft_calcule()
+int all_size()
+{
+	t_output *ptr;
+	int	    i;
+	
+	i = 0;
+	ptr = head_func(NULL);
+	while (ptr)
+	{
+		i = long_string() + 12 + i;
+		ptr = ptr->next;
+	}
+	return (i);
+}
+
+int is_enough()
 {
 	t_output *ptrnode;
-	float x;
-	int		j;
-	int l_string;
-
+//	int	l_string;
+//	float		x;
+	//int 		j;
+	//int 		y;
+	int		resolution;
+	
+//	x = 0;
+//	y = 0;
+	//j = 0;
+	resolution = 0;
 	ptrnode = head_func(NULL);
-	x = 0;
-	x = ptrnode->llen / ptrnode->max.ws_row;
-/*	fprintf(stderr, "max.ws_row %d\n", ptrnode->max.ws_row);
-	fprintf(stderr, "max.ws_col %d\n", ptrnode->max.ws_col);
-	fprintf(stderr, "x ==> %f\n", x);
-	ft_putchar('\n');*/
-	l_string = long_string();
-	// fprintf(stderr, "l_string ==> %d\n", l_string);
-	 j = 1;
-	 if (x == (int)x)
-		j = 0;
-     int y = (x + j) * (l_string + (6 * (x - 1)));
-  //  fprintf(stderr, "y ==> %d\n", y);
-	if (y < ptrnode->max.ws_col)
+//	l_string = long_string();
+//	fprintf(stderr, "ptrnode->tail->key %d\n", ptrnode->tail->key);
+//	fprintf(stderr, "ptrnode->max.ws_row %d\n", ptrnode->max.ws_row);
+//	fprintf(stderr, "ptrnode->max.ws_col %d\n", ptrnode->max.ws_col);
+//	x = ptrnode->tail->key / ptrnode->max.ws_row;
+//	if (x != (int)x)
+//		j = 1;
+//	fprintf(stderr, "result of x =====>  %f\n", x);
+	resolution = ptrnode->max.ws_row * ptrnode->max.ws_col;
+//	fprintf(stderr, "value of resolution  =====>  %d\n", resolution);
+//	fprintf(stderr, "value of l_string  =====>  %d\n", l_string);
+	//fprintf(stderr, "value of y  =====>  %d\n", j);
+//	int b = 6 * ptrnode->max.ws_row * (x + 1);
+//	y = (x + 1) * l_string  * ptrnode->max.ws_row + b;
+	int size = all_size();
+//	fprintf(stderr, "value of size  =====>  %d\n", size);
+	if (ptrnode->tail->key > ptrnode->max.ws_row && size < resolution)
 	{
-		fill_pos_2(l_string + 6);
-		return (1);
+		return (2);
 	}
-	else
-		return (0);
+	else if (ptrnode->tail->key < ptrnode->max.ws_row)
+		return (1);
+	return (0);
 }
 
 int windows_size()
 {
-	t_output *ptrnode;
-	int			l_string;
 
-	ptrnode = head_func(NULL);
-	ioctl(0, TIOCGWINSZ , &ptrnode->max);
-	head_func(&ptrnode);
+	t_output *head_ref;
+	int	l_string;
+
+	head_ref = head_func(NULL);
+	ioctl(0, TIOCGWINSZ, &head_ref->max);
+	head_func(&head_ref);
 	l_string = long_string();
-//	fprintf(stderr, "ptrnode->tail->key %d\n", ptrnode->tail->key);
-//	fprintf(stderr, "ptrnode->tail->position->hpos %d\n", ptrnode->tail->position->hpos);
-//	fprintf(stderr, "long string is  %d\n", l_string);
-	if (ptrnode->tail->key < ptrnode->max.ws_row)
+	if (is_enough() == 1)
 	{
-	//	fprintf(stderr, "HERE first if statement\n");
+//		fprintf(stderr, "here first\n");
 		fill_pos();
 		return (1);
 	}
-	else if (ptrnode->tail->key > ptrnode->max.ws_col)
+	else if (is_enough() == 2)
 	{
-	//	fprintf(stderr, "HERE second if statement\n");
-	//	fprintf(stderr, "ptrnode->tail->position->hpos + l_string is %d\n", ptrnode->tail->position->hpos + l_string);
-		if (ft_calcule())
-			return (1);
+//		fprintf(stderr, "here second\n");
+	/*	if (temp->tail->position->hpos + l_string >= temp->max.ws_col)
+			return (0);*/
+		fill_pos_2(l_string + 6);
+		return (1);
 	}
-	else if ( (l_string + ptrnode->tail->position->hpos) >= ptrnode->max.ws_col)
-		return (0);
-	return (0);                                                                                                                           }
+	return (0);                                                                                               
+}
 
 void	print_list2(t_output *head_ref)
 {
