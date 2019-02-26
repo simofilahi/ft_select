@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:40:17 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 13:44:03 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 14:22:20 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ void	ft_signal(void)
 void	init_coor(void)
 {
 	struct s_coordone	p;
-	
-	(void)p;
+
 	p.vpos = 0;
 	p.hpos = 0;
 }
