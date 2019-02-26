@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:44:43 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/25 16:04:13 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:43:40 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ void	print_in_stdout(void)
 		}
 		head_ref = head_ref->next;
 	}
-	free_list();
 	exit(0);
 }
 

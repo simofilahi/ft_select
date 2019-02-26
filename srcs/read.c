@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 22:02:10 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/25 16:43:10 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:40:53 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,13 +92,13 @@ void	get_input_2(int ch, int key)
 		normal_mode();
 		exit(0);
 	}
-	else if (ch == DELETE)
+	else if (ch == DELETE && windows_size())
 	{
 		delete_node();
 		tputs(CL_STRING, 1, my_putchar);
 		print_list();
 	}
-	else if (ch == BACKSPACE)
+	else if (ch == BACKSPACE && windows_size())
 	{
 		delete_node();
 		tputs(CL_STRING, 1, my_putchar);
@@ -118,13 +118,13 @@ void	get_input(void)
 		ch = 0;
 		if (read(STDIN_FILENO, &ch, 4))
 		{
-			if (ch == KEYUP)
+			if (ch == KEYUP && windows_size())
 			{
 				key = finder_cursor();
 				apply_new_postion_cursor(key, 1);
 				print_list();
 			}
-			else if (ch == KEYDOWN)
+			else if (ch == KEYDOWN && windows_size())
 			{
 				key = finder_cursor();
 				apply_new_postion_cursor(key, 0);

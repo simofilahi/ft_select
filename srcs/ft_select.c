@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:23:34 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/25 15:48:15 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:41:36 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ void		normal_mode(void)
 	tputs(TE_STRING, 1, my_putchar);
 	tputs(VE_STRING, 1, my_putchar);
 	tcsetattr(STDIN_FILENO, TCSANOW, &(ptr->ptr)->oldconfig);
-	free_list();
 	exit(0);
 }
 

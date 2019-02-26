@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 19:25:50 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 12:41:15 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 13:42:36 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,12 @@ void			normal_mode();
 void			fill_pos();
 void			fill_pos_2(int y);
 int				long_string();
-void			free_list();
 int				ft_calcule(void);
 int				windows_size(void);
 void			print_list2(t_output *head_ref);
+int				ft_coulmn(void);
+int				element_key(void);
+int				is_enough(void);
+int				all_size(void);
 
 #endif

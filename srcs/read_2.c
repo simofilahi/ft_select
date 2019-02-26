@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read_sister.c                                      :+:      :+:    :+:   */
+/*   read_2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/02/24 23:36:38 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/25 16:43:48 by mfilahi          ###   ########.fr       */
+/*   Created: 2019/02/26 13:47:21 by mfilahi           #+#    #+#             */
+/*   Updated: 2019/02/26 13:47:32 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,4 @@ int		ft_selected(void)
 		head_ref = head_ref->next;
 	}
 	return (0);
-}
-
-void	free_list(void)
-{
-	t_output	*tmp;
-	t_output	*current;
-
-	current = head_func(NULL);
-	free(current->ptr);
-	while (current)
-	{
-		tmp = current;
-		current = current->next;
-		free(tmp->position);
-		free(tmp);
-	}
 }
