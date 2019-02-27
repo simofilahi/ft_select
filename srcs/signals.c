@@ -44,6 +44,8 @@ void	signal_handler(int sign)
 		signal(SIGTSTP, SIG_DFL);
 		ioctl(0, TIOCSTI, "\x1A");
 	}
+	else if (sign == SIGKILL)
+		normal_mode();
 }
 
 void	ft_signal(void)
@@ -52,6 +54,7 @@ void	ft_signal(void)
 	signal(SIGWINCH, signal_handler);
 	signal(SIGCONT, signal_handler);
 	signal(SIGTSTP, signal_handler);
+	signal(SIGKILL, signal_handler);
 }
 
 void	init_coor(void)
