@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:35:22 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 13:50:29 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 16:48:26 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,21 +28,20 @@ t_output	*add_node(char *string, int cursor, int key)
 	return (new_node);
 }
 
-t_output	*create_list(char **argv, int argc)
+t_output	*create_list(char **argv, int argc, int j)
 {
 	t_output	*node;
 	t_output	*ptr;
-	int			j;
 
 	node = NULL;
 	ptr = NULL;
-	j = 0;
 	while ((*++argv))
 	{
 		if (node == NULL)
 		{
 			node = add_node(*argv, 1, j++);
 			ptr = node;
+			ptr->tail = node;
 		}
 		else
 		{

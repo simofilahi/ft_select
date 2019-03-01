@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 19:25:50 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 13:42:36 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 15:41:25 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ struct			s_coordone
 
 void			print_list();
 t_output		*add_node(char *string, int cursor, int key);
-t_output		*create_list(char **argv, int argc);
+t_output		*create_list(char **argv, int argc, int j);
 void			ft_select();
 int				my_putchar(int c);
 int				main(int argc, char **argv);

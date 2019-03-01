@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/25 13:40:17 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 14:22:20 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/03/01 14:48:24 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	normal_mode_2(void)
 
 void	signal_handler(int sign)
 {
-	if (sign == SIGINT)
+	if (sign == SIGINT || sign == SIGQUIT || sign == SIGTERM)
 		normal_mode();
 	else if (sign == SIGWINCH)
 	{
@@ -44,8 +44,6 @@ void	signal_handler(int sign)
 		signal(SIGTSTP, SIG_DFL);
 		ioctl(0, TIOCSTI, "\x1A");
 	}
-	else if (sign == SIGKILL)
-		normal_mode();
 }
 
 void	ft_signal(void)
@@ -54,7 +52,8 @@ void	ft_signal(void)
 	signal(SIGWINCH, signal_handler);
 	signal(SIGCONT, signal_handler);
 	signal(SIGTSTP, signal_handler);
-	signal(SIGKILL, signal_handler);
+	signal(SIGQUIT, signal_handler);
+	signal(SIGTERM, signal_handler);
 }
 
 void	init_coor(void)

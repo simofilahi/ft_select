@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/26 13:46:51 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 13:47:09 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 16:53:36 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,17 @@ void	fill_pos_2(int y)
 			j++;
 		}
 	}
+}
+
+void	print_list_3(void)
+{
+	t_output	*temp;
+
+	temp = head_func(NULL);
+	if (temp->max.ws_col > 12)
+		ft_putendl_fd("windows so small !!!", 2);
+	else
+		ft_putendl_fd(" ", 2);
 }
 
 void	print_list2(t_output *head_ref)
@@ -89,5 +100,5 @@ void	print_list(void)
 		}
 	}
 	else
-		ft_putendl_fd("windows so small !!!", 2);
+		print_list_3();
 }

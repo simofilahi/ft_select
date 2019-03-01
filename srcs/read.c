@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 22:02:10 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 13:40:53 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/02/26 16:38:38 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,11 +45,13 @@ void	delete_node(void)
 	if (head_ref->next == NULL && head_ref->key == 0)
 	{
 		free(head_ref->position);
+		free(head_ref->ptr);
 		free(head_ref);
 		normal_mode();
 	}
 	if (head_ref && head_ref->cursor == 1)
 	{
+		head_ref->next->ptr = head_ref->ptr;
 		head_func(&head_ref->next);
 		temp = head_func(NULL);
 		reset_cursor();
@@ -59,13 +61,12 @@ void	delete_node(void)
 		init_tail();
 		return ;
 	}
-	else
-		delete_node_2();
+	delete_node_2();
 }
 
 void	get_input_3(int ch, int key)
 {
-	if (ch == SPACE)
+	if (ch == SPACE && windows_size())
 	{
 		if (!ft_selected())
 		{
@@ -79,7 +80,7 @@ void	get_input_3(int ch, int key)
 		}
 		print_list();
 	}
-	else if (ch == ENTER)
+	else if (ch == ENTER && windows_size())
 	{
 		print_in_stdout();
 	}

@@ -6,7 +6,7 @@
 /*   By: mfilahi <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/02/24 21:23:34 by mfilahi           #+#    #+#             */
-/*   Updated: 2019/02/26 13:41:36 by mfilahi          ###   ########.fr       */
+/*   Updated: 2019/03/01 14:31:57 by mfilahi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		ft_termcap(void)
 		normal_mode();
 	}
 	success = tgetent(ap, termtype);
-	if (success == -1)
+	if (success == -1 || success == 0)
 	{
 		ft_putendl_fd("set a valid TERM value *_-)", 2);
 		normal_mode();
@@ -79,7 +79,7 @@ int			main(int argc, char **argv)
 	}
 	ft_signal();
 	init_coor();
-	head = create_list(argv, argc);
+	head = create_list(argv, argc, 0);
 	head_func(&head);
 	ft_termios();
 	ft_termcap();
